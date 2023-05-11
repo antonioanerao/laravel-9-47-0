@@ -18,7 +18,6 @@ RUN apt update && \
                    gnupg \
                    curl \
                    wget \
-                   vim \
                    dirmngr \
                    software-properties-common \
                    rsync \
