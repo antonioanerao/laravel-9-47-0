@@ -1,16 +1,18 @@
 ### Docker Image for Laravel Projects
 
+[![Docker](https://github.com/antonioanerao/dockerfile-laravel/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/antonioanerao/dockerfile-laravel/actions/workflows/docker-publish.yml)
+
 #### Nginx Version
-    1.23.4
+    1.25.4
 
 #### PHP Version
-    8.2.5
+    8.2.7
 
 #### NODE Version
-    16.20.0
+    18.20.0
 
 ### NPM Version
-    9.6.6
+    10.5.0
 
 #### PHP Extensions
     php8.2-fpm

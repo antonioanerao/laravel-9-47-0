@@ -34,12 +34,10 @@ RUN apt update && \
                    pkg-config
 
 # Define a localização padrão
-RUN locale-gen && \
-    curl -o /etc/apt/trusted.gpg.d/php.gpg -fSL "https://packages.sury.org/php/apt.gpg"
+RUN locale-gen
 
 # Instala o PHP 8.2, suas extensões, node, npm e composer
-RUN echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/php.list && \
-    apt -y update && \
+RUN apt -y update && \
     apt -y install --allow-unauthenticated php8.2 \
                    php8.2-fpm \
                    php8.2-mysql \
@@ -59,10 +57,9 @@ RUN echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc
                    php8.2-phar \
                    php8.2-sqlite3 && \
     curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer &&  \
-    curl -s https://deb.nodesource.com/setup_16.x | bash && \
+    curl -s https://deb.nodesource.com/setup_18.x | bash && \
     apt-get update && \
-    apt install nodejs -y && \
-    npm install -g npm@9.6.6
+    apt install nodejs -y 
 
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
     curl https://packages.microsoft.com/config/ubuntu/22.04/prod.list > /etc/apt/sources.list.d/mssql-release.list && \
@@ -83,7 +80,8 @@ RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
     chmod 755 /docker-entrypoint.d/30-php8.2-fpm.sh && \
     composer create-project laravel/laravel . && \
     chgrp -R www-data /laravel/storage /laravel/bootstrap/cache /laravel/storage/logs && \
-    chmod -R ug+rwx /laravel/storage /laravel/bootstrap/cache /laravel/storage/logs
+    chmod -R ug+rwx /laravel/storage /laravel/bootstrap/cache /laravel/storage/logs && \
+    chown root:www-data -R database && chmod ug+rwx -R database
 
 COPY config_cntr/php.ini /etc/php/8.2/fpm/php.ini
 COPY config_cntr/www.conf /etc/php/8.2/fpm/pool.d/www.conf
